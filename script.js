@@ -1,4 +1,4 @@
-let counter = -1;
+let counter = 0;
       let historyArray =[];
       function gen() {
         const seth = document.getElementById("strength");
@@ -78,19 +78,16 @@ function()
 {navigator.clipboard.writeText(newhis.innerText)}
           );
       }
-      document.getElementById("n").addEventListener("input", gen);
-       document.getElementById("n").addEventListener("input", function(){counter++});
-          document.getElementById("nums").addEventListener("change", function(){counter++});
- document.getElementById("schar").addEventListener("change", function(){counter++});
- document.getElementById("lowcase").addEventListener("change", function(){counter++});
- document.getElementById("upcase").addEventListener("change", function(){counter++});
- document.addEventListener("DOMContentLoaded", function(){counter++})
-      document.getElementById("nums").addEventListener("change", gen);
- document.getElementById("schar").addEventListener("change", gen);
- document.getElementById("lowcase").addEventListener("change", gen);
- document.getElementById("upcase").addEventListener("change", gen);
- document.addEventListener("DOMContentLoaded", gen);
-
+      let array = ["schar","lowcase","upcase","nums"];
+      array.forEach(id => {document.getElementById(id).addEventListener("change",cilcking)});
+      document.getElementById("n").addEventListener("input",cilcking);
+ document.addEventListener("DOMContentLoaded", function(){
+    gen();
+    counter++;})
+function cilcking(){
+ gen();
+counter++;
+}
 function modecolor(){
   const copy = document.getElementById("copy");
   const body =document.body;
