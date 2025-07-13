@@ -12,6 +12,9 @@ body {
        animation: new 5s ease infinite alternate;
        transition: animation 5s ease;
       }
+      #lottie{
+        position: absolute;
+      }
       @keyframes new{
         0%{font-family: 'Courier New', Courier, monospace;}
 10%{font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;}

@@ -23,7 +23,7 @@ return;
 return;
         }
         vSh.innerHTML = input;
-        let valuesholder = ["ABCDEFGHIJLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","123456789","@$_!&*"];
+        let valuesholder = ["ABCDEFGHIJLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","@$_!&*"];
         let keyholder = [upcase,lowcase,nums,shar];
         let ll = ``;
      for(let x=0;x<keyholder.length;x++){
@@ -42,10 +42,10 @@ function()
           );
           
           let strength = 0;
-          if(nums.checked) strength++ ;
-          if(upcase.checked) strength++ ;
-          if(lowcase.checked) strength++ ;
-          if(shar.checked) strength++ ;
+          if(/[a-z]/.test(pass.innerHTML)===true) strength++ ;
+          if(/[A-Z]/.test(pass.innerHTML)===true) strength++ ;
+          if(/[0-9]/.test(pass.innerHTML)===true) strength++ ;
+          if(/[^a-zA-Z0-9]/.test(pass.innerHTML)===true) strength++ ;
           if(input>8) strength++;
           if(strength===1){
             seth.innerHTML="Very weak";
