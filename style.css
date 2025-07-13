@@ -8,32 +8,15 @@ body {
         color: #0d1112;
         transition: color 0.2s ease,background-color 0.4s ease-in-out;
       }
-      #pass:hover{
-       animation: new 5s ease infinite alternate;
-       transition: animation 5s ease;
-      }
       #lottie{
         position: absolute;
-      }
-      @keyframes new{
-        0%{font-family: 'Courier New', Courier, monospace;}
-10%{font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;}
-20%{font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
-30%{font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;}
-40%{font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
-50%{font-family: 'Times New Roman', Times, serif;}
-60%{font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;}
-70%{font-family:Arial, Helvetica, sans-serif;}
-80%{font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
-90%{font-family: Georgia, 'Times New Roman', Times, serif;}
-100%{font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;}
+        top: 50px;
       }
       #group {
         display: flex;
         flex-wrap: wrap;
       }
       #pass {
-        margin-top: 20px;
         background-color: #89c3d7;
         padding: 30px;
         overflow-x: auto;
