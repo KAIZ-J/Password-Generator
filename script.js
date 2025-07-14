@@ -209,4 +209,4 @@ function advAppear(){
     adiv.style.display="none";
   };
 }
-document.getElementById("retry").addEventListener("click",gen)
+document.getElementById("retry").addEventListener("click",cilcking)
