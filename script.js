@@ -1,3 +1,11 @@
+const seth = document.getElementById("strength");
+        const upcase = document.getElementById("upcase");
+        const lowcase = document.getElementById("lowcase");
+        const nums = document.getElementById("nums");
+         const shar = document.getElementById("schar");
+        const vSh = document.getElementById("value");
+        const pass = document.getElementById("pass");
+        const histdiv = document.getElementById("histories");
 // this is giving each option their characters
 const up = "ABCDEFGHIJLMNOPQRSTUVWXYZ".split("");
   const low = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -35,17 +43,21 @@ document.addEventListener("DOMContentLoaded",function(){
   
 })
 // this is my counter that adds up evertime change in input or the checkboxes happen and the history array for saving all the passwords generated
-let counter = 0;
-      let historyArray =[];
+ 
+      function container(array){
+        histdiv.innerHTML=""
+        array.forEach(el=>{
+          histdiv.innerHTML+=`<div><button type="button" onclick="copy(this)" class="box">${el}</button></div>`
+        })
+      }
+      let historyArray =JSON.parse(localStorage.getItem("passwords")) || [];
+      
+      container(historyArray);
+      function copy(elem){
+        navigator.clipboard.writeText(elem.innerText)
+      }
       // the main function where we can say literally evrthing happens in 
       function gen() {
-        const seth = document.getElementById("strength");
-        const upcase = document.getElementById("upcase");
-        const lowcase = document.getElementById("lowcase");
-        const nums = document.getElementById("nums");
-         const shar = document.getElementById("schar");
-        const vSh = document.getElementById("value");
-        const pass = document.getElementById("pass");
         pass.innerHTML = "";
         const input = Number(document.getElementById("n").value);
         if(input===0){
@@ -137,29 +149,19 @@ function()
             seth.innerHTML="Very strong";
             pass.style.border="2px solid green";
           }
-          // every time pswrd is generated it will be pushed to the historyArray found above
-          historyArray.push(pass.innerHTML);
-          // the pswrds will be saved to history then prepend to an elemnt 
- const histdiv = document.getElementById("histories");
-    let newhis = document.createElement("div");
-newhis.innerHTML=`<button class="box">${historyArray[counter]}</button>`;
-  histdiv.prepend(newhis);
-  // when the boxes in the histories are clicked their text or pswrd will be copied 
-  document.querySelector(".box").addEventListener("click",
-function()
-{navigator.clipboard.writeText(newhis.innerText)}
-          );
+          // every time pswrd is generated it will be pushed/unshift to the historyArray
+          historyArray.unshift(pass.innerHTML);
+          localStorage.setItem("passwords",JSON.stringify(historyArray))
+          container(historyArray);
       }
       // this is for making gen function happen when the changes or inpput or domcontet is loaded
       let array = ["schar","lowcase","upcase","nums"];
       array.forEach(id => {document.getElementById(id).addEventListener("change",cilcking)});
       document.getElementById("n").addEventListener("input",cilcking);
  document.addEventListener("DOMContentLoaded", function(){
-    gen();
-    counter++;})
+    gen();})
 function cilcking(){
  gen();
-counter++;
 }
 // obviosly for toggling between light and dark mode
 function modecolor(){
