@@ -11,37 +11,27 @@ const up = "ABCDEFGHIJLMNOPQRSTUVWXYZ".split("");
   const low = "abcdefghijklmnopqrstuvwxyz".split("");
   const num = "0123456789".split("");
   const sym = "@$_!&*%^|\/~?<>}{][)(".split("");
+  function addElem(container,cls,content){
+  for(let i=0;i<content.length;i++){
+    let newElem = document.createElement("div");
+    newElem.innerHTML=`<input type="checkbox" class="${cls}" checked><span>${content[i]}</span>`;
+    container.append(newElem);
+  }
+  }
+  function advChecked(cls,array){
+    let text = ``;
+    const checkbox = document.querySelectorAll(`.${cls}`);
+for(let g=0;g<array.length;g++){
+        if(checkbox[g].checked===true){
+            text += `${array[g]}`;
+        } }
+        return text;
+  }
   // then a better way than writing like more than 26 lines of code to generate advanced setttings
-document.addEventListener("DOMContentLoaded",function(){
-  const advup = document.getElementById("advupcase");
-  const advlow = document.getElementById("advlowcase");
-  const advnum = document.getElementById("advnums");
-  const advchar = document.getElementById("advcharsets");
-
-  for(let i=0;i<up.length;i++){
-    let newup = document.createElement("div");
-    newup.innerHTML=`<input type="checkbox" class="elemup" checked><span>${up[i]}</span>`;
-    advup.append(newup);
-  }
-  for(let j=0;j<low.length;j++){
-    let newlow = document.createElement("div");
-    newlow.innerHTML=`<input type="checkbox" class="elemlow" checked><span>${low[j]}</span>`;
-    advlow.append(newlow);
-  }
-  for(let k=0;k<num.length;k++){
-    let term = num[k];
-    let newelement = document.createElement("div");
-    newelement.innerHTML=`<input type="checkbox" class="elemnum" checked><span>${term}</span>`;
-    advnum.append(newelement);
-  }
-  for(let l=0;l<sym.length;l++){
-    let term = sym[l];
-    let newelement = document.createElement("div");
-    newelement.innerHTML=`<input type="checkbox" class="elemsym" checked><span>${term}</span>`;
-    advchar.append(newelement);
-  }
-  
-})
+  addElem(document.getElementById("advupcase"),"elemup",up)
+  addElem(document.getElementById("advlowcase"),"elemlow",low)
+  addElem(document.getElementById("advnums"),"elemnum",num)
+  addElem(document.getElementById("advcharsets"),"elemsym",sym)
       function container(array){
         histdiv.innerHTML=""
         array.forEach(el=>{
@@ -58,45 +48,18 @@ document.addEventListener("DOMContentLoaded",function(){
       function gen() {
         pass.innerHTML = "";
         const input = Number(document.getElementById("n").value);
-        if(input===0){
-            pass.innerHTML="input can't be 0 dumbass";
-            pass.style.border="";
-            seth.innerHTML="";
-return;
-        }
-        else if(!nums.checked && !shar.checked && !upcase.checked && !lowcase.checked ){
+         if(!nums.checked && !shar.checked && !upcase.checked && !lowcase.checked ){
             pass.innerHTML="select atleast one of the options";
             seth.innerHTML="";
-            pass.style.border="";
+            pass.style.boxShadow="";
 return;
         }
 // this is to get which checboxes are checked then use them in generating passwords for advaced customization by deafult they are all checked 
         vSh.innerHTML = input;
-        let upper = ``;
-        let lower = ``;
-        let number = ``;
-        let symbols = ``;
-
-const stringups = document.querySelectorAll(".elemup");
-for(let g=0;g<up.length;g++){
-        if(stringups[g].checked===true){
-            upper += `${up[g]}`;
-        } }
-const stringlows = document.querySelectorAll(".elemlow");
-for(let g=0;g<low.length;g++){
-        if(stringlows[g].checked===true){
-          lower += `${low[g]}`;
-        } }
-        const stringnums = document.querySelectorAll(".elemnum");
-for(let g=0;g<num.length;g++){
-        if(stringnums[g].checked===true){
-            number += `${num[g]}`;
-        } }
-        const stringsym = document.querySelectorAll(".elemsym");
-for(let g=0;g<sym.length;g++){
-        if(stringsym[g].checked===true){
-            symbols += `${sym[g]}`;
-        } }
+        let upper = advChecked("elemup",up);
+        let lower = advChecked("elemlow",low);
+        let number = advChecked("elemnum",num);
+        let symbols = advChecked("elemsym",sym);
         let valuesholder = [upper,lower,number,symbols];
         let keyholder = [upcase,lowcase,nums,shar];
         let ll = ``;
@@ -129,23 +92,23 @@ function()
           // here is where it will checked based on the it's strength value
           if(strength===1){
             seth.innerHTML="Very weak";
-            pass.style.border="2px solid red";
+            pass.style.boxShadow="0px 0px 30px red";
           }
           else if(strength===2){
             seth.innerHTML="Weak";
-            pass.style.border="2px solid orange";
+           pass.style.boxShadow="0px 0px 30px orange";
           }
           else if(strength===3){
             seth.innerHTML="Medium";
-            pass.style.border="2px solid yellow";
+           pass.style.boxShadow="0px 0px 30px yellow";
           }
           else if(strength===4){
             seth.innerHTML="Strong";
-            pass.style.border="2px solid blue";
+            pass.style.boxShadow="0px 0px 30px blue";
           }
           else if(strength===5){
             seth.innerHTML="Very strong";
-            pass.style.border="2px solid green";
+            pass.style.boxShadow="0px 0px 30px green";
           }
           // every time pswrd is generated it will be pushed/unshift to the historyArray
           historyArray.unshift(pass.innerHTML);
