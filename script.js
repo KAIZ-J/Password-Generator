@@ -42,8 +42,6 @@ document.addEventListener("DOMContentLoaded",function(){
   }
   
 })
-// this is my counter that adds up evertime change in input or the checkboxes happen and the history array for saving all the passwords generated
- 
       function container(array){
         histdiv.innerHTML=""
         array.forEach(el=>{
