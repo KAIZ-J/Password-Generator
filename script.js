@@ -126,32 +126,7 @@ function cilcking(){
 }
 // obviosly for toggling between light and dark mode
 function modecolor(){
-  const copy = document.getElementById("copy");
-  const body =document.body;
-  const pass = document.getElementById("pass");
-  const col = document.getElementById("iconcolor");
- const his = document.getElementById("iconhis");
- const retry = document.getElementById("retry");
- const adv = document.getElementById("adv");
-  if(getComputedStyle(body).backgroundColor==="rgb(242, 246, 248)"){
-    body.style.backgroundColor="#070b0d";
-    body.style.color="#edf1f2";
-    pass.style.backgroundColor="#286276";
-   col.style.color="white";
-   his.style.color="white";
-   copy.style.color="white";
-   retry.style.color="white";
-   adv.style.color="white";
-  }
-  else{
-    body.style.backgroundColor="";
-    body.style.color="";
-    pass.style.backgroundColor="";
-    col.style.color="";
-   his.style.color="";
-   copy.style.color="";
-   adv.style.color="";
-  }
+ document.body.classList.toggle("dark")
 }
 // for display toggling the contents under them when clicked
 function appear(){
