@@ -24,7 +24,7 @@ body {
         color: var(--text);
         transition: color 0.2s ease,background-color 0.4s ease-in-out;
       }
-      button{
+      button,input{
         cursor: pointer;
       }
       nav button{
@@ -161,9 +161,19 @@ cursor: pointer;
       grid-template-columns: repeat(7,1fr);
     }
     }
+    @keyframes rotateIcon {
+      0%{
+        transform: rotate(0deg);
+      }
+      100%{
+        transform: rotate(360deg);
+      }
+    }
 
     #advcustom{
-      display: none;
+      text-align: center;
+      border-radius: 10px;
+      height: 200px;
     }
     #advanced{
       border: none;
@@ -183,7 +193,7 @@ height: 50px;
 background-color: var(--secondary);
 border-radius: 10px;
 border: none;
-transition: 0.2s ease;
+transition:all 0.3s ease;
 font-family: poppins;
 color: var(--text);
     }

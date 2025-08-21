@@ -6,6 +6,8 @@ const seth = document.getElementById("strength");
         const vSh = document.getElementById("value");
         const pass = document.getElementById("pass");
         const histdiv = document.getElementById("histories");
+        const copyBtn = document.getElementById("copy");
+         const retryIcon = document.getElementById("retry-icon");
 // this is giving each option their characters
 const up = "ABCDEFGHIJLMNOPQRSTUVWXYZ".split("");
   const low = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -75,11 +77,7 @@ return;
           let randomi = Math.floor(Math.random() * array.length);
           pass.innerHTML += `${array[randomi]}`;
         }
-        // for copying the current pswrd when the copy is clicked
-document.getElementById("copy").addEventListener("click",
-function()
-{navigator.clipboard.writeText(pass.innerHTML)}
-          );
+      
         //  this is the pasword strength section 
           let strength = 0;
           // if the pasword generated passes one of these statements 1 strength will be added to it ,max is 5 very strong
@@ -115,15 +113,21 @@ function()
           localStorage.setItem("passwords",JSON.stringify(historyArray))
           container(historyArray);
       }
+      copyBtn.addEventListener("click",
+function()
+{navigator.clipboard.writeText(pass.innerHTML);
+  copyBtn.innerHTML="Copied!"
+  setTimeout(() => {
+    copyBtn.innerHTML='<i class="fa-solid fa-copy"></i><span>COPY TO CLIPBOARD</span>'
+  }, 1200);
+}
+          );
       // this is for making gen function happen when the changes or inpput or domcontet is loaded
       let array = ["schar","lowcase","upcase","nums"];
-      array.forEach(id => {document.getElementById(id).addEventListener("change",cilcking)});
-      document.getElementById("n").addEventListener("input",cilcking);
+      array.forEach(id => {document.getElementById(id).addEventListener("change",gen)});
+      document.getElementById("n").addEventListener("input",gen);
  document.addEventListener("DOMContentLoaded", function(){
     gen();})
-function cilcking(){
- gen();
-}
 // obviosly for toggling between light and dark mode
 function modecolor(){
  document.body.classList.toggle("dark")
@@ -140,11 +144,12 @@ function appear(){
 }
 function advAppear(){
   const adiv = document.getElementById("advcustom");
-  if(adiv.style.display==="none"){
-    adiv.style.display="block";
-  }
-  else{
-    adiv.style.display="none";
-  };
+ adiv.showModal()
 }
-document.getElementById("retry").addEventListener("click",cilcking)
+function retryAgain(elem){
+  gen();
+  retryIcon.style.animation="rotateIcon .3s ease";
+}
+function closeDialog(elem){
+  elem.parentElement.close()
+}

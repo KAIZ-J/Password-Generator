@@ -43,10 +43,12 @@
    <div id="actions">
 <button type="button" id="copy"><i class="fa-solid fa-copy"></i>
       <span>COPY TO CLIPBOARD</span></button>
-      <button type="button" id="retry"><i class="fa-solid fa-rotate-right"></i></button>
+      <button type="button" id="retry" onclick="retryAgain(this)"><i class="fa-solid fa-rotate-right" id="retry-icon"></i></button>
    </div> 
       <button id="advanced" onclick="advAppear()"><span title="What characters should each option include" id="adv">Advanced Customization</span></button>
-      <div id="advcustom">
+      <dialog id="advcustom">
+        <h2>Advanced Customization</h2>
+        <p>Choose what characters should each option include</p>
 <div id="advupcase">
 </div>
 <hr>
@@ -61,7 +63,8 @@
 <div id="advcharsets">
 
 </div>
-      </div>
+<button type="button" onclick="closeDialog(this)">Close</button>
+      </dialog>
     <script src="script.js">
       
     </script>
