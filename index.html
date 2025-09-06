@@ -28,7 +28,7 @@
   <dotlottie-wc id="lottie" src="https://lottie.host/93140cd2-7456-4612-8ce1-37903890f07e/EyhIquQChD.lottie" speed="1" style="width: 100px; height: 100px" mode="forward" autoplay></dotlottie-wc>
     <h1>Password Generator</h1>
     <div id="group">
-      <label for="n">N<u>o</u> of characters:</label>
+      <label for="n">Character n<u>o</u>:</label> 
       <input type="range" id="n" min="1" max="100" value="12" />
       <span id="value"></span>
     </div>
@@ -49,18 +49,18 @@
       <dialog id="advcustom">
         <h2>Advanced Customization</h2>
         <p>Choose what characters should each option include</p>
-<div id="advupcase">
+<div id="advupcase" class="advanced-section">
 </div>
 <hr>
-<div id="advlowcase">
+<div id="advlowcase" class="advanced-section">
 
 </div>
 <hr>
-<div id="advnums">
+<div id="advnums" class="advanced-section">
 
 </div>
 <hr>
-<div id="advcharsets">
+<div id="advcharsets" class="advanced-section">
 
 </div>
 <button type="button" onclick="closeDialog(this)">Close</button>
