@@ -9,10 +9,10 @@ const seth = document.getElementById("strength");
         const copyBtn = document.getElementById("copy");
          const retryIcon = document.getElementById("retry-icon");
 // this is giving each option their characters
-const up = "ABCDEFGHIJLMNOPQRSTUVWXYZ".split("");
-  const low = "abcdefghijklmnopqrstuvwxyz".split("");
-  const num = "0123456789".split("");
-  const sym = "@$_!&*%^|\/~?<>}{][)(".split("");
+let up = "ABCDEFGHIJLMNOPQRSTUVWXYZ";
+  let low = "abcdefghijklmnopqrstuvwxyz";
+  let num = "0123456789";
+  let sym = "@$_!&*%^|\/~?<>}{][)(";
   function addElem(container,cls,content){
   for(let i=0;i<content.length;i++){
     let newElem = document.createElement("div");
@@ -40,7 +40,11 @@ for(let g=0;g<array.length;g++){
           histdiv.innerHTML+=`<div><button type="button" onclick="copy(this)" class="box">${el}</button></div>`
         })
       }
-      let historyArray =JSON.parse(localStorage.getItem("passwords")) || [];
+      function containerAdd(str){
+         histdiv.innerHTML+= `<div><button type="button" onclick="copy(this)" class="box">${str}</button></div>`;
+       
+      }
+      let historyArray =JSON.parse(localStorage.getItem("gen-passwords")) || [];
       
       container(historyArray);
       function copy(elem){
@@ -58,11 +62,7 @@ return;
         }
 // this is to get which checboxes are checked then use them in generating passwords for advaced customization by deafult they are all checked 
         vSh.innerHTML = input;
-        let upper = advChecked("elemup",up);
-        let lower = advChecked("elemlow",low);
-        let number = advChecked("elemnum",num);
-        let symbols = advChecked("elemsym",sym);
-        let valuesholder = [upper,lower,number,symbols];
+        let valuesholder = [up,low,num,sym];
         let keyholder = [upcase,lowcase,nums,shar];
         let ll = ``;
         // this is where the checkboxes that are checked their content will be added
@@ -78,7 +78,7 @@ return;
           pass.innerHTML += `${array[randomi]}`;
         }
       
-        //  this is the pasword strength section 
+        // //  this is the pasword strength section 
           let strength = 0;
           // if the pasword generated passes one of these statements 1 strength will be added to it ,max is 5 very strong
         // using the regex method here
@@ -108,10 +108,10 @@ return;
             seth.innerHTML="Very strong";
             pass.style.boxShadow="0px 0px 30px green";
           }
-          // every time pswrd is generated it will be pushed/unshift to the historyArray
-          historyArray.unshift(pass.innerHTML);
-          localStorage.setItem("passwords",JSON.stringify(historyArray))
-          container(historyArray);
+        //   // every time pswrd is generated it will be pushed/unshift to the historyArray
+     historyArray.unshift(pass.innerHTML);
+          localStorage.setItem("gen-passwords",JSON.stringify(historyArray))
+         containerAdd(pass.textContent) 
       }
       copyBtn.addEventListener("click",
 function()
