@@ -1,72 +1,1373 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Generate Your Own customized Password in Seconds!">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-    <title>Password Generator</title>
-    <script src="https://kit.fontawesome.com/9603c04a31.js" crossorigin="anonymous"></script>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Kablammo|Sour Gummy|Atma|Poppins|Montserrat"
-    />
-     <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <nav id="navbar">
-<button type="button" onclick="modecolor()"><i class="fa-solid fa-circle-half-stroke fa-xl" id="iconcolor"></i></button>
-<button type="button" onclick="appear()"><i class="fa-solid fa-clock-rotate-left fa-xl" id="iconhis"></i></button>
-<div id="histories">
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherLock | Secure Password Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: 139, 92, 246;
+            --secondary: 99, 102, 241;
+            --accent: 236, 72, 153;
+            --surface: 15, 23, 42;
+            --surface-light: 30, 41, 59;
+            --text-primary: 248, 250, 252;
+            --text-secondary: 148, 163, 184;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: rgb(15, 23, 42);
+            color: rgb(248, 250, 252);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .hero-section {
+            background: radial-gradient(ellipse at center, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .password-display {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .password-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .password-display:hover::before {
+            left: 100%;
+        }
+        
+        .strength-meter {
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .strength-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+        
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgb(139, 92, 246);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            transition: all 0.2s;
+        }
+        
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+        }
+        
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .custom-checkbox:checked {
+            background: rgb(139, 92, 246);
+            border-color: rgb(139, 92, 246);
+        }
+        
+        .custom-checkbox:checked::after {
+            content: "✓";
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(99, 102, 241) 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -15px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s ease;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+        
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .loading-bar {
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, rgb(139, 92, 246), rgb(99, 102, 241));
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+        
+        .ai-processing {
+            display: none;
+        }
+        
+        .ai-processing.active {
+            display: block;
+            animation: processing 1.5s infinite;
+        }
+        
+        @keyframes processing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .character-option {
+            transition: all 0.2s ease;
+        }
+        
+        .character-option:hover {
+            transform: translateY(-2px);
+        }
+        
+        .history-item {
+            transition: all 0.2s;
+        }
+        
+        .history-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+        }
+        
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .grid-lines {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+        #history-list::-webkit-scrollbar{
+display: none;
+        }
+    </style>
+</head>
+<body class="grid-lines">
+   
+    <!-- Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 py-4 px-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                    <i class="fas fa-lock text-white"></i>
+                </div>
+                <h1 class="text-xl font-bold">CipherLock</h1>
+            </div>
+        </div>
     </nav>
-      
-  <dotlottie-wc id="lottie" src="https://lottie.host/93140cd2-7456-4612-8ce1-37903890f07e/EyhIquQChD.lottie" speed="1" style="width: 100px; height: 100px" mode="forward" autoplay></dotlottie-wc>
-    <h1>Password Generator</h1>
-    <div id="group">
-      <label for="n">Character n<u>o</u>:</label> 
-      <input type="range" id="n" min="1" max="100" value="12" />
-      <span id="value"></span>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16">
+        <!-- Hero Section -->
+        <section class="hero-section py-16 px-4">
+            <div class="max-w-4xl mx-auto text-center fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">Secure Password Generation</h1>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Create strong, unique passwords with advanced customization and real-time security analysis.</p>
+            </div>
+        </section>
+
+        <!-- Password Generator -->
+        <section class="px-4 py-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Configuration Panel -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Password Display -->
+                        <div class="card rounded-2xl p-6 slide-in-left">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Generated Password</h2>
+                                <div class="flex items-center space-x-2">
+                                    <span id="password-length" class="text-sm text-slate-400">12 characters</span>
+                                    <div class="ai-processing text-purple-400">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
+                                    <button id="refresh-password" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors" aria-label="Generate new password">
+                                        <i class="fas fa-sync-alt text-slate-300"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="password-display rounded-xl p-4 mb-4">
+                                <div id="password-output" class="text-2xl font-mono text-center break-all min-h-[60px] flex items-center justify-center" aria-live="polite">
+                                    <span class="text-slate-500">Your password will appear here</span>
+                                </div>
+                                <button id="copy-password" class="w-full mt-4 py-3 btn-primary rounded-xl flex items-center justify-center space-x-2" aria-label="Copy password to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy to Clipboard</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Password Strength -->
+                            <div class="mt-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">Password Strength</span>
+                                    <span id="strength-text" class="text-sm">Analyzing...</span>
+                                </div>
+                                <div class="strength-meter">
+                                    <div id="strength-fill" class="strength-fill w-0 bg-gradient-to-r from-red-500 to-green-500"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Security Info -->
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-shield-alt text-green-400"></i>
+                                    <span>Entropy: <span id="entropy-value">0</span> bits</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-bolt text-yellow-400"></i>
+                                    <span>Crack Time: <span id="crack-time">Instantly</span></span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-check-circle text-blue-400"></i>
+                                    <span>Pattern: <span id="pattern-type">Random</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Configuration Options -->
+                        <div class="card rounded-2xl p-6 slide-in-left">
+                            <h2 class="text-xl font-semibold mb-6">Password Configuration</h2>
+                            
+                            <!-- Length Slider -->
+                            <div class="mb-8">
+                                <div class="flex justify-between items-center mb-4">
+                                    <label for="length-slider" class="font-medium">Password Length: <span id="length-value" class="text-purple-400">12</span></label>
+                                    <span id="length-status" class="text-sm text-slate-400">Medium</span>
+                                </div>
+                                <input type="range" id="length-slider" min="4" max="50" value="12" class="custom-slider w-full" aria-label="Adjust password length">
+                                <div class="flex justify-between text-xs text-slate-500 mt-1">
+                                    <span>4</span>
+                                    <span>50</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Character Options -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <h3 class="font-medium mb-3">Character Types</h3>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="uppercase" class="custom-checkbox mr-3" checked aria-checked="true">
+                                            <label for="uppercase" class="cursor-pointer flex-1">Uppercase Letters (A-Z)</label>
+                                            <span class="text-xs text-slate-500">26</span>
+                                        </div>
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="lowercase" class="custom-checkbox mr-3" checked aria-checked="true">
+                                            <label for="lowercase" class="cursor-pointer flex-1">Lowercase Letters (a-z)</label>
+                                            <span class="text-xs text-slate-500">26</span>
+                                        </div>
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="numbers" class="custom-checkbox mr-3" checked aria-checked="true">
+                                            <label for="numbers" class="cursor-pointer flex-1">Numbers (0-9)</label>
+                                            <span class="text-xs text-slate-500">10</span>
+                                        </div>
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="symbols" class="custom-checkbox mr-3" checked aria-checked="true">
+                                            <label for="symbols" class="cursor-pointer flex-1">Symbols (!@#$% etc.)</label>
+                                            <span class="text-xs text-slate-500">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Advanced Options -->
+                                <div>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <h3 class="font-medium">Advanced Options</h3>
+                                        <button id="advanced-toggle" class="text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium" aria-expanded="false">
+                                            Customize Characters
+                                        </button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="exclude-similar" class="custom-checkbox mr-3" aria-checked="false">
+                                            <label for="exclude-similar" class="cursor-pointer">Exclude Similar Characters (i, l, 1, o, 0)</label>
+                                        </div>
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="exclude-ambiguous" class="custom-checkbox mr-3" aria-checked="false">
+                                            <label for="exclude-ambiguous" class="cursor-pointer">Exclude Ambiguous Characters ({ } [ ] ( ) / \ ' " ` ~ , ; : .)</label>
+                                        </div>
+                                        <div class="flex items-center character-option">
+                                            <input type="checkbox" id="require-all" class="custom-checkbox mr-3" checked aria-checked="true">
+                                            <label for="require-all" class="cursor-pointer">Require at least one character from each selected type</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Generate Button -->
+                            <button id="generate-password" class="w-full py-3 btn-primary rounded-xl flex items-center justify-center space-x-2">
+                                <i class="fas fa-key"></i>
+                                <span>Generate Secure Password</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Side Panel -->
+                    <div class="space-y-8">
+                        <!-- Security Tips -->
+                        <div class="card rounded-2xl p-6 slide-in-right">
+                            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                                Security Tips
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium">Use Long Passwords</h3>
+                                        <p class="text-sm text-slate-400">Longer passwords are exponentially harder to crack.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium">Mix Character Types</h3>
+                                        <p class="text-sm text-slate-400">Combine uppercase, lowercase, numbers, and symbols.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium">Avoid Common Patterns</h3>
+                                        <p class="text-sm text-slate-400">Don't use sequential characters or common words.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium">Use Unique Passwords</h3>
+                                        <p class="text-sm text-slate-400">Never reuse passwords across different services.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Panel -->
+                        <div id="history-panel" class="card rounded-2xl p-6 slide-in-right">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Password History</h2>
+                               
+                            </div>
+                            <div id="history-list" class="max-h-64 overflow-y-auto space-y-2" role="list" aria-label="Generated passwords">
+                                <!-- History items will be added here -->
+                            </div>
+                            <div class="mt-4 flex justify-between">
+                                <button id="clear-history" class="text-red-400 hover:text-red-300 transition-colors text-sm" aria-label="Clear all password history">
+                                    Clear History
+                                </button>
+                                <button id="export-history" class="text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Export password history">
+                                    Export as CSV
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Advanced Customization Modal -->
+    <div id="advanced-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50" role="dialog" aria-modal="true" aria-labelledby="advanced-modal-title">
+        <div class="modal-content bg-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-slate-700">
+            <div class="p-6 border-b border-slate-700">
+                <div class="flex justify-between items-center">
+                    <h2 id="advanced-modal-title" class="text-2xl font-bold">Advanced Character Customization</h2>
+                    <button id="close-advanced" class="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors" aria-label="Close advanced customization">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-slate-400 mt-2">Select which characters to include in each category</p>
+            </div>
+            
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Uppercase -->
+                    <div>
+                        <h3 class="font-medium mb-3 text-lg">Uppercase Letters</h3>
+                        <div class="grid grid-cols-6 gap-2" id="uppercase-grid" role="list" aria-label="Uppercase letters">
+                            <!-- Uppercase characters will be added here -->
+                        </div>
+                        <div class="mt-3 flex justify-between">
+                            <button class="select-all uppercase-select-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Select all uppercase letters">
+                                Select All
+                            </button>
+                            <button class="deselect-all uppercase-deselect-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Deselect all uppercase letters">
+                                Deselect All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Lowercase -->
+                    <div>
+                        <h3 class="font-medium mb-3 text-lg">Lowercase Letters</h3>
+                        <div class="grid grid-cols-6 gap-2" id="lowercase-grid" role="list" aria-label="Lowercase letters">
+                            <!-- Lowercase characters will be added here -->
+                        </div>
+                        <div class="mt-3 flex justify-between">
+                            <button class="select-all lowercase-select-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Select all lowercase letters">
+                                Select All
+                            </button>
+                            <button class="deselect-all lowercase-deselect-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Deselect all lowercase letters">
+                                Deselect All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Numbers -->
+                    <div>
+                        <h3 class="font-medium mb-3 text-lg">Numbers</h3>
+                        <div class="grid grid-cols-5 gap-2" id="numbers-grid" role="list" aria-label="Numbers">
+                            <!-- Numbers will be added here -->
+                        </div>
+                        <div class="mt-3 flex justify-between">
+                            <button class="select-all numbers-select-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Select all numbers">
+                                Select All
+                            </button>
+                            <button class="deselect-all numbers-deselect-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Deselect all numbers">
+                                Deselect All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Symbols -->
+                    <div>
+                        <h3 class="font-medium mb-3 text-lg">Symbols</h3>
+                        <div class="grid grid-cols-5 gap-2" id="symbols-grid" role="list" aria-label="Symbols">
+                            <!-- Symbols will be added here -->
+                        </div>
+                        <div class="mt-3 flex justify-between">
+                            <button class="select-all symbols-select-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Select all symbols">
+                                Select All
+                            </button>
+                            <button class="deselect-all symbols-deselect-all text-purple-400 hover:text-purple-300 transition-colors text-sm" aria-label="Deselect all symbols">
+                                Deselect All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-slate-700 flex justify-end">
+                <button id="save-advanced" class="px-6 py-2 btn-primary rounded-lg">
+                    Save Changes
+                </button>
+            </div>
+        </div>
     </div>
-    <div id="checkboxes">
-      <div><input type="checkbox" id="upcase" checked/> <label for="upcase">Uppercase letters</label></div>
-       <div><input type="checkbox" id="lowcase" checked/> <label for="lowcase">Lowercase letters</label></div>
-      <div><input type="checkbox" id="nums"checked/> <label for="nums">Numbers</label></div>
-      <div><input type="checkbox" id="schar" checked/><label for="schar">Charsets</label> </div>
-    </div>
-    <div id="pass"></div>
-  <div id="s-container">Password Strength: <span id="strength"></span></div>
-   <div id="actions">
-<button type="button" id="copy"><i class="fa-solid fa-copy"></i>
-      <span>COPY TO CLIPBOARD</span></button>
-      <button type="button" id="retry" onclick="retryAgain(this)"><i class="fa-solid fa-rotate-right" id="retry-icon"></i></button>
-   </div> 
-      <button id="advanced" onclick="advAppear()"><span title="What characters should each option include" id="adv">Advanced Customization</span></button>
-      <dialog id="advcustom">
-        <h2>Advanced Customization</h2>
-        <p>Choose what characters should each option include</p>
-<div id="advupcase" class="advanced-section">
-</div>
-<hr>
-<div id="advlowcase" class="advanced-section">
 
-</div>
-<hr>
-<div id="advnums" class="advanced-section">
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                        <i class="fas fa-lock text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold">CipherLock</span>
+                </div>
+                <div class="text-sm text-slate-500">
+                    &copy; 2023 CipherLock. All passwords generated locally for your security.
+                </div>
+            </div>
+        </div>
+    </footer>
 
-</div>
-<hr>
-<div id="advcharsets" class="advanced-section">
+    <script>
+        // Character sets
+        const characterSets = {
+            uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            lowercase: "abcdefghijklmnopqrstuvwxyz",
+            numbers: "0123456789",
+            symbols: "!@#$%^&*()_+-=[]{}|;:,.<>?"
+        };
 
-</div>
-<button type="button" onclick="closeDialog(this)">Close</button>
-      </dialog>
-    <script src="script.js">
-      
+        // Selected characters for each category
+        let selectedCharacters = {
+            uppercase: characterSets.uppercase,
+            lowercase: characterSets.lowercase,
+            numbers: characterSets.numbers,
+            symbols: characterSets.symbols
+        };
+
+        // Password history
+        let passwordHistory = JSON.parse(localStorage.getItem('cipherLockHistory')) || [];
+
+        // DOM Elements
+        const passwordOutput = document.getElementById('password-output');
+        const copyPasswordBtn = document.getElementById('copy-password');
+        const refreshPasswordBtn = document.getElementById('refresh-password');
+        const generatePasswordBtn = document.getElementById('generate-password');
+        const lengthSlider = document.getElementById('length-slider');
+        const lengthValue = document.getElementById('length-value');
+        const lengthStatus = document.getElementById('length-status');
+        const strengthText = document.getElementById('strength-text');
+        const strengthFill = document.getElementById('strength-fill');
+        const entropyValue = document.getElementById('entropy-value');
+        const crackTime = document.getElementById('crack-time');
+        const patternType = document.getElementById('pattern-type');
+        const themeToggle = document.getElementById('theme-toggle');
+        const historyToggle = document.getElementById('history-toggle');
+        const historyPanel = document.getElementById('history-panel');
+        const closeHistoryBtn = document.getElementById('close-history');
+        const historyList = document.getElementById('history-list');
+        const clearHistoryBtn = document.getElementById('clear-history');
+        const exportHistoryBtn = document.getElementById('export-history');
+        const advancedToggle = document.getElementById('advanced-toggle');
+        const advancedModal = document.getElementById('advanced-modal');
+        const closeAdvancedBtn = document.getElementById('close-advanced');
+        const saveAdvancedBtn = document.getElementById('save-advanced');
+        const aiProcessing = document.querySelector('.ai-processing');
+        const loadingBar = document.getElementById('loading-bar');
+
+        // Checkboxes
+        const uppercaseCheckbox = document.getElementById('uppercase');
+        const lowercaseCheckbox = document.getElementById('lowercase');
+        const numbersCheckbox = document.getElementById('numbers');
+        const symbolsCheckbox = document.getElementById('symbols');
+        const excludeSimilarCheckbox = document.getElementById('exclude-similar');
+        const excludeAmbiguousCheckbox = document.getElementById('exclude-ambiguous');
+        const requireAllCheckbox = document.getElementById('require-all');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading
+            simulateLoading();
+            
+            // Initialize animations
+            initAnimations();
+            
+            // Generate initial password
+            setTimeout(() => {
+                generatePassword();
+            }, 1000);
+            
+            // Load password history
+            updateHistoryList();
+            
+            // Initialize character grids
+            initializeCharacterGrids();
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Simulate loading progress
+        function simulateLoading() {
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                   
+                    
+                    // Make elements visible after loading
+                    document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+                        el.classList.add('visible');
+                    });
+                } else {
+                    width += 8; 
+                  
+                } 
+            }, 40); 
+        } 
+
+        // Initialize scroll animations
+        function initAnimations() {
+            // Observe elements for scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all animated elements
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Password generation
+            generatePasswordBtn.addEventListener('click', generatePassword);
+            refreshPasswordBtn.addEventListener('click', generatePassword);
+            
+            // Configuration changes
+            lengthSlider.addEventListener('input', updateLength);
+            uppercaseCheckbox.addEventListener('change', generatePassword);
+            lowercaseCheckbox.addEventListener('change', generatePassword);
+            numbersCheckbox.addEventListener('change', generatePassword);
+            symbolsCheckbox.addEventListener('change', generatePassword);
+            excludeSimilarCheckbox.addEventListener('change', generatePassword);
+            excludeAmbiguousCheckbox.addEventListener('change', generatePassword);
+            requireAllCheckbox.addEventListener('change', generatePassword);
+            
+            // Copy password
+            copyPasswordBtn.addEventListener('click', copyPassword);
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // History panel
+            historyToggle.addEventListener('click', toggleHistoryPanel);
+            closeHistoryBtn.addEventListener('click', toggleHistoryPanel);
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            exportHistoryBtn.addEventListener('click', exportHistory);
+            
+            // Advanced modal
+            advancedToggle.addEventListener('click', openAdvancedModal);
+            closeAdvancedBtn.addEventListener('click', closeAdvancedModal);
+            saveAdvancedBtn.addEventListener('click', saveAdvancedSettings);
+            
+            // Select all / deselect all buttons
+            document.querySelectorAll('.select-all').forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.className.split(' ')[1].split('-')[0];
+                    selectAllCharacters(category);
+                });
+            });
+            
+            document.querySelectorAll('.deselect-all').forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.className.split(' ')[1].split('-')[0];
+                    deselectAllCharacters(category);
+                });
+            });
+            
+            // Close modals when clicking outside
+            document.addEventListener('click', function(event) {
+                if (event.target === advancedModal) {
+                    closeAdvancedModal();
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeAdvancedModal();
+                    if (!historyPanel.classList.contains('hidden')) toggleHistoryPanel();
+                }
+            });
+        }
+
+        // Initialize character selection grids
+        function initializeCharacterGrids() {
+            // Uppercase letters
+            const uppercaseGrid = document.getElementById('uppercase-grid');
+            characterSets.uppercase.split('').forEach(char => {
+                const charElement = createCharacterElement(char, 'uppercase');
+                uppercaseGrid.appendChild(charElement);
+            });
+            
+            // Lowercase letters
+            const lowercaseGrid = document.getElementById('lowercase-grid');
+            characterSets.lowercase.split('').forEach(char => {
+                const charElement = createCharacterElement(char, 'lowercase');
+                lowercaseGrid.appendChild(charElement);
+            });
+            
+            // Numbers
+            const numbersGrid = document.getElementById('numbers-grid');
+            characterSets.numbers.split('').forEach(char => {
+                const charElement = createCharacterElement(char, 'numbers');
+                numbersGrid.appendChild(charElement);
+            });
+            
+            // Symbols
+            const symbolsGrid = document.getElementById('symbols-grid');
+            characterSets.symbols.split('').forEach(char => {
+                const charElement = createCharacterElement(char, 'symbols');
+                symbolsGrid.appendChild(charElement);
+            });
+        }
+
+        // Create a character element for the grid
+        function createCharacterElement(char, category) {
+            const button = document.createElement('button');
+            button.className = 'py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors character-item selected';
+            button.setAttribute('type', 'button');
+            button.setAttribute('aria-label', `Include ${char} in ${category}`);
+            button.innerHTML = `
+                <span class="text-lg font-medium">${char}</span>
+            `;
+            
+            button.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                if (this.classList.contains('selected')) {
+                    this.classList.add('bg-purple-500', 'text-white');
+                    this.classList.remove('bg-slate-700', 'hover:bg-slate-600');
+                } else {
+                    this.classList.remove('bg-purple-500', 'text-white');
+                    this.classList.add('bg-slate-700', 'hover:bg-slate-600');
+                }
+                updateSelectedCharacters(category);
+            });
+            
+            return button;
+        }
+
+        // Update selected characters for a category
+        function updateSelectedCharacters(category) {
+            const grid = document.getElementById(`${category}-grid`);
+            const selectedChars = [];
+            
+            grid.querySelectorAll('.character-item.selected').forEach(item => {
+                selectedChars.push(item.textContent.trim());
+            });
+            
+            selectedCharacters[category] = selectedChars.join('');
+            
+            // If no characters are selected, disable the checkbox
+            const checkbox = document.getElementById(category);
+            if (selectedChars.length === 0) {
+                checkbox.checked = false;
+                checkbox.disabled = true;
+            } else {
+                checkbox.disabled = false;
+            }
+            
+            // Update character count display
+            const countElement = checkbox.parentElement.querySelector('.text-xs');
+            if (countElement) {
+                countElement.textContent = selectedChars.length;
+            }
+            
+            // Regenerate password if this category is enabled
+            if (checkbox.checked) {
+                generatePassword();
+            }
+        }
+
+        // Select all characters in a category
+        function selectAllCharacters(category) {
+            const grid = document.getElementById(`${category}-grid`);
+            grid.querySelectorAll('.character-item').forEach(item => {
+                item.classList.add('selected', 'bg-purple-500', 'text-white');
+                item.classList.remove('bg-slate-700', 'hover:bg-slate-600');
+            });
+            updateSelectedCharacters(category);
+        }
+
+        // Deselect all characters in a category
+        function deselectAllCharacters(category) {
+            const grid = document.getElementById(`${category}-grid`);
+            grid.querySelectorAll('.character-item').forEach(item => {
+                item.classList.remove('selected', 'bg-purple-500', 'text-white');
+                item.classList.add('bg-slate-700', 'hover:bg-slate-600');
+            });
+            updateSelectedCharacters(category);
+        }
+
+        // Update password length display
+        function updateLength() {
+            const length = parseInt(lengthSlider.value);
+            lengthValue.textContent = length;
+            
+            // Update length status
+            if (length < 8) {
+                lengthStatus.textContent = 'Short';
+                lengthStatus.className = 'text-sm text-red-400';
+            } else if (length < 12) {
+                lengthStatus.textContent = 'Medium';
+                lengthStatus.className = 'text-sm text-yellow-400';
+            } else if (length < 16) {
+                lengthStatus.textContent = 'Good';
+                lengthStatus.className = 'text-sm text-blue-400';
+            } else {
+                lengthStatus.textContent = 'Excellent';
+                lengthStatus.className = 'text-sm text-green-400';
+            }
+            
+            generatePassword();
+        }
+
+        // Generate a new password
+        function generatePassword() {
+            // Show AI processing animation
+            aiProcessing.classList.add('active');
+            
+            // Use a slight delay to show the processing animation
+            setTimeout(() => {
+                const length = parseInt(lengthSlider.value);
+                let charset = '';
+                
+                // Build character set based on selected options
+                if (uppercaseCheckbox.checked) charset += selectedCharacters.uppercase;
+                if (lowercaseCheckbox.checked) charset += selectedCharacters.lowercase;
+                if (numbersCheckbox.checked) charset += selectedCharacters.numbers;
+                if (symbolsCheckbox.checked) charset += selectedCharacters.symbols;
+                
+                // Handle edge case: no character types selected
+                if (charset === '') {
+                    passwordOutput.innerHTML = '<span class="text-red-400">Please select at least one character type</span>';
+                    updateStrengthIndicator(0);
+                    updateEntropy(0);
+                    aiProcessing.classList.remove('active');
+                    return;
+                }
+                
+                // Exclude similar characters if requested
+                if (excludeSimilarCheckbox.checked) {
+                    const similarChars = 'il1Lo0O';
+                    charset = charset.split('').filter(char => !similarChars.includes(char)).join('');
+                }
+                
+                // Exclude ambiguous characters if requested
+                if (excludeAmbiguousCheckbox.checked) {
+                    const ambiguousChars = '{}[]()/\\\'"`~,;:.';
+                    charset = charset.split('').filter(char => !ambiguousChars.includes(char)).join('');
+                }
+                
+                // Generate password
+                let password = '';
+                const charsetLength = charset.length;
+                
+                // If we need to ensure at least one character from each selected type
+                if (requireAllCheckbox.checked) {
+                    const requiredChars = [];
+                    
+                    if (uppercaseCheckbox.checked) {
+                        const randomIndex = Math.floor(Math.random() * selectedCharacters.uppercase.length);
+                        requiredChars.push(selectedCharacters.uppercase[randomIndex]);
+                    }
+                    
+                    if (lowercaseCheckbox.checked) {
+                        const randomIndex = Math.floor(Math.random() * selectedCharacters.lowercase.length);
+                        requiredChars.push(selectedCharacters.lowercase[randomIndex]);
+                    }
+                    
+                    if (numbersCheckbox.checked) {
+                        const randomIndex = Math.floor(Math.random() * selectedCharacters.numbers.length);
+                        requiredChars.push(selectedCharacters.numbers[randomIndex]);
+                    }
+                    
+                    if (symbolsCheckbox.checked) {
+                        const randomIndex = Math.floor(Math.random() * selectedCharacters.symbols.length);
+                        requiredChars.push(selectedCharacters.symbols[randomIndex]);
+                    }
+                    
+                    // Shuffle required characters and add to password
+                    shuffleArray(requiredChars);
+                    password = requiredChars.join('');
+                    
+                    // Fill the rest of the password with random characters
+                    for (let i = password.length; i < length; i++) {
+                        const randomIndex = Math.floor(Math.random() * charsetLength);
+                        password += charset[randomIndex];
+                    }
+                    
+                    // Shuffle the final password to mix required characters
+                    password = shuffleString(password);
+                } else {
+                    // Simple random generation
+                    for (let i = 0; i < length; i++) {
+                        const randomIndex = Math.floor(Math.random() * charsetLength);
+                        password += charset[randomIndex];
+                    }
+                }
+                
+                // Update password display
+                passwordOutput.textContent = password;
+                passwordOutput.setAttribute('aria-label', `Generated password: ${password}`);
+                
+                // Calculate and display password strength
+                const strength = calculatePasswordStrength(password);
+                updateStrengthIndicator(strength);
+                
+                // Calculate and display entropy
+                const entropy = calculateEntropy(password, charsetLength);
+                updateEntropy(entropy);
+                
+                // Update pattern type
+                updatePatternType(password);
+                
+                // Add to history
+                addToHistory(password);
+                
+                // Hide AI processing animation
+                aiProcessing.classList.remove('active');
+            }, 800); // Simulate processing time
+        }
+
+        // Calculate password strength (0-4)
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            
+            // Length factor
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (password.length >= 16) strength++;
+            
+            // Character variety
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            // Cap at 4 for our meter (0-4)
+            return Math.min(strength, 4);
+        }
+
+        // Calculate password entropy in bits
+        function calculateEntropy(password, charsetSize) {
+            // Entropy = log2(charsetSize^passwordLength)
+            return Math.round(Math.log2(Math.pow(charsetSize, password.length)));
+        }
+
+        // Update the password strength indicator
+        function updateStrengthIndicator(strength) {
+            // Update strength meter width (0-4 scale to 0-100%)
+            const width = (strength / 4) * 100;
+            strengthFill.style.width = `${width}%`;
+            
+            // Update strength text
+            const strengthLabels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            const strengthColors = ['text-red-400', 'text-orange-400', 'text-yellow-400', 'text-blue-400', 'text-green-400'];
+            
+            strengthText.textContent = strengthLabels[strength];
+            strengthText.className = `text-sm ${strengthColors[strength]}`;
+            
+            // Update crack time estimation
+            updateCrackTime(strength);
+        }
+
+        // Update entropy display and crack time
+        function updateEntropy(entropy) {
+            entropyValue.textContent = entropy;
+            
+            // Update crack time based on entropy
+            if (entropy < 28) {
+                crackTime.textContent = "Instantly";
+            } else if (entropy < 36) {
+                crackTime.textContent = "Seconds";
+            } else if (entropy < 60) {
+                crackTime.textContent = "Hours";
+            } else if (entropy < 80) {
+                crackTime.textContent = "Years";
+            } else {
+                crackTime.textContent = "Millennia";
+            }
+        }
+
+        // Update pattern type
+        function updatePatternType(password) {
+            // Simple pattern detection
+            if (password.match(/(.)\1{2,}/)) {
+                patternType.textContent = "Repeating";
+            } else if (password.match(/123|abc|ABC/)) {
+                patternType.textContent = "Sequential";
+            } else if (password.match(/^[a-z]+$/) || password.match(/^[A-Z]+$/) || password.match(/^[0-9]+$/)) {
+                patternType.textContent = "Single Type";
+            } else {
+                patternType.textContent = "Random";
+            }
+        }
+
+        // Update crack time estimation
+        function updateCrackTime(strength) {
+            // This is a simplified estimation
+            const times = ["Instantly", "Seconds", "Hours", "Years", "Millennia"];
+            crackTime.textContent = times[strength];
+        }
+
+        // Copy password to clipboard
+        function copyPassword() {
+            const password = passwordOutput.textContent;
+            
+            // Don't copy if there's an error message
+            if (password.includes('Please select') || password.includes('Your password will appear here')) {
+                return;
+            }
+            
+            navigator.clipboard.writeText(password).then(() => {
+                // Visual feedback
+                const passwordDisplay = document.querySelector('.password-display');
+                passwordDisplay.style.transform = 'scale(1.02)';
+                
+                // Change button text temporarily
+                copyPasswordBtn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+                copyPasswordBtn.classList.add('bg-green-500');
+                copyPasswordBtn.classList.remove('btn-primary');
+                
+                setTimeout(() => {
+                    passwordDisplay.style.transform = 'scale(1)';
+                    copyPasswordBtn.innerHTML = '<i class="fas fa-copy"></i><span>Copy to Clipboard</span>';
+                    copyPasswordBtn.classList.remove('bg-green-500');
+                    copyPasswordBtn.classList.add('btn-primary');
+                }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy password: ', err);
+            });
+        }
+
+        // Toggle between light and dark theme
+        function toggleTheme() {
+            // This is a black-themed app, so we'll just toggle a slight variation
+            document.body.classList.toggle('bg-slate-900');
+            themeToggle.querySelector('i').classList.toggle('text-yellow-400');
+            themeToggle.querySelector('i').classList.toggle('text-purple-400');
+        }
+
+        // Toggle history panel visibility
+        function toggleHistoryPanel() {
+            historyPanel.classList.toggle('hidden');
+            historyToggle.setAttribute('aria-expanded', !historyPanel.classList.contains('hidden'));
+        }
+
+        // Add password to history
+        function addToHistory(password) {
+            // Don't add duplicates consecutively
+            if (passwordHistory.length > 0 && passwordHistory[0].password === password) {
+                return;
+            }
+            
+            // Add to beginning of array
+            passwordHistory.unshift({
+                password: password,
+                timestamp: new Date().toISOString(),
+                strength: calculatePasswordStrength(password)
+            });
+            
+            // Limit history size
+            if (passwordHistory.length > 10) {
+                passwordHistory.pop();
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('cipherLockHistory', JSON.stringify(passwordHistory));
+            
+            // Update history list
+            updateHistoryList();
+        }
+
+        // Update the history list display
+        function updateHistoryList() {
+            historyList.innerHTML = '';
+            
+            if (passwordHistory.length === 0) {
+                historyList.innerHTML = '<p class="text-slate-500 text-center py-4">No password history yet</p>';
+                return;
+            }
+            
+            passwordHistory.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item p-3 bg-slate-700 rounded-lg flex justify-between items-center';
+                historyItem.innerHTML = `
+                    <div class="flex-1 mr-2">
+                        <div class="font-mono truncate">${item.password}</div>
+                        <div class="text-xs text-slate-400 mt-1">${new Date(item.timestamp).toLocaleString()}</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="copy-history p-1 text-purple-400 hover:text-purple-300 transition-colors" data-password="${item.password}" aria-label="Copy password">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="delete-history p-1 text-red-400 hover:text-red-300 transition-colors" data-index="${index}" aria-label="Delete password from history">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                historyList.appendChild(historyItem);
+            });
+            
+            // Add event listeners to history items
+            document.querySelectorAll('.copy-history').forEach(button => {
+                button.addEventListener('click', function() {
+                    const password = this.getAttribute('data-password');
+                    navigator.clipboard.writeText(password);
+                    
+                    // Visual feedback
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-copy"></i>';
+                    }, 1000);
+                });
+            });
+            
+            document.querySelectorAll('.delete-history').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    passwordHistory.splice(index, 1);
+                    localStorage.setItem('cipherLockHistory', JSON.stringify(passwordHistory));
+                    updateHistoryList();
+                });
+            });
+        }
+
+        // Clear password history
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear your password history?')) {
+                passwordHistory = [];
+                localStorage.setItem('cipherLockHistory', JSON.stringify(passwordHistory));
+                updateHistoryList();
+            }
+        }
+
+        // Export password history as CSV
+        function exportHistory() {
+            if (passwordHistory.length === 0) {
+                alert('No password history to export');
+                return;
+            }
+            
+            let csvContent = "data:text/csv;charset=utf-8,Password,Generated At,Strength\n";
+            passwordHistory.forEach(item => {
+                csvContent += `"${item.password}","${new Date(item.timestamp).toLocaleString()}","${item.strength}"\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "cipherlock_passwords.csv");
+            document.body.appendChild(link);
+            
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Open advanced customization modal
+        function openAdvancedModal() {
+            advancedModal.classList.add('active');
+            advancedToggle.setAttribute('aria-expanded', 'true');
+        }
+
+        // Close advanced customization modal
+        function closeAdvancedModal() {
+            advancedModal.classList.remove('active');
+            advancedToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        // Save advanced character settings
+        function saveAdvancedSettings() {
+            // Settings are already saved in selectedCharacters via the grid interactions
+            closeAdvancedModal();
+            generatePassword(); // Regenerate with new settings
+        }
+
+        // Utility function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Utility function to shuffle a string
+        function shuffleString(str) {
+            const array = str.split('');
+            shuffleArray(array);
+            return array.join('');
+        }
     </script>
-  </body>
+</body>
 </html>
